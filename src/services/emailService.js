@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
 
-
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.mail.ru';
 const SMTP_PORT = parseInt(process.env.SMTP_PORT || '465');
 const SMTP_USER = process.env.SMTP_USER;
@@ -46,7 +45,6 @@ export const sendOrderNotification = async (order) => {
     subject,
     html,
   });
-  console.log('test')
   return info;
 };
 
