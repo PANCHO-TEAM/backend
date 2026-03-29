@@ -1,6 +1,7 @@
 import prisma from "../db.js";
 import { sendOrderNotification } from "../services/emailService.js";
 
+// Получаем все заказы из базы данных и отправляем их клиенту.
 export const getOrders = async (req, res) => {
   try {
     const orders = await prisma.order.findMany();
@@ -12,6 +13,7 @@ export const getOrders = async (req, res) => {
   }
 };
 
+// Создаем заказ, сохраняем его в базе и запускаем отправку уведомления администратору.
 export const createOrder = async (req, res) => {
   try {
     const { name, message, contactType, contactValue, productId } = req.body;
@@ -27,7 +29,7 @@ export const createOrder = async (req, res) => {
       include: { product: true },
     });
 
-    // Отправляем уведомление администратору (асинхронно, не блокируя ответ)
+    // Отправляем письмо асинхронно, чтобы уведомление не задерживало ответ API.
     sendOrderNotification(order, order.product).catch((error) => {
       console.error("Failed to send order notification email:", error);
     });
@@ -40,6 +42,7 @@ export const createOrder = async (req, res) => {
   }
 };
 
+// Удаляем заказ по идентификатору, переданному в URL.
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;

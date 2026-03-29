@@ -1,7 +1,9 @@
 -- CreateEnum
+-- Создаем enum для допустимых типов контакта в заказе.
 CREATE TYPE "ContactType" AS ENUM ('PHONE', 'EMAIL', 'TELEGRAM');
 
 -- CreateTable
+-- Создаем таблицу товаров с основными полями каталога.
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
@@ -15,6 +17,7 @@ CREATE TABLE "Product" (
 );
 
 -- CreateTable
+-- Создаем таблицу заказов с контактами клиента и ссылкой на товар.
 CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -28,4 +31,5 @@ CREATE TABLE "Order" (
 );
 
 -- AddForeignKey
+-- Связываем заказ с товаром и обнуляем ссылку, если товар удален.
 ALTER TABLE "Order" ADD CONSTRAINT "Order_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;

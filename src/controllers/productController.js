@@ -1,5 +1,6 @@
 import prisma from "../db.js";
 
+// Получаем весь каталог товаров из базы данных.
 export const getProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany();
@@ -11,15 +12,18 @@ export const getProducts = async (req, res) => {
   }
 };
 
+// Создаем новый товар и нормализуем входные значения перед записью в базу.
 export const createProduct = async (req, res) => {
   try {
-    const { title, description, weight, images } = req.body;
+    const { title, description, weight, diameter, servings, images } = req.body;
     console.log(req.body);
     const product = await prisma.product.create({
       data: {
         title: title.trim(),
         description: description.trim(),
         weight: parseFloat(weight),
+        diameter: parseFloat(diameter),
+        servings: parseInt(servings, 10),
         images: images || [],
       },
     });
@@ -32,10 +36,11 @@ export const createProduct = async (req, res) => {
   }
 };
 
+// Обновляем только те поля товара, которые пришли в запросе.
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, weight, images } = req.body;
+    const { title, description, weight, diameter, servings, images } = req.body;
 
     const product = await prisma.product.update({
       where: { id: Number(id) },
@@ -43,6 +48,8 @@ export const updateProduct = async (req, res) => {
         title: title ? title.trim() : undefined,
         description: description ? description.trim() : undefined,
         weight: weight !== undefined ? parseFloat(weight) : undefined,
+        diameter: diameter !== undefined ? parseFloat(diameter) : undefined,
+        servings: servings !== undefined ? parseInt(servings, 10) : undefined,
         images,
       },
     });
@@ -55,6 +62,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+// Удаляем товар по его идентификатору.
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

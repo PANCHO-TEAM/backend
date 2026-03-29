@@ -1,25 +1,28 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// Генератор создает Prisma Client, который используется в Node.js-коде проекта.
 generator client {
   provider = "prisma-client-js"
 }
 
+// Источником данных для Prisma служит база PostgreSQL.
 datasource db {
   provider = "postgresql"
 }
 
+// Набор допустимых способов связи, которые пользователь может указать в заказе.
 enum ContactType {
   PHONE
   EMAIL
   TELEGRAM
 }
 
+// Модель товара: хранит основные данные каталога и связанные с ним заказы.
 model Product {
   id          Int      @id @default(autoincrement())
   title       String
   description String
   weight      Float
+  diameter    Float
+  servings    Int
   images      String[]
 
   createdAt   DateTime @default(now())
@@ -27,6 +30,7 @@ model Product {
   orders      Order[]
 }
 
+// Модель заказа: хранит данные клиента и необязательную ссылку на товар.
 model Order {
   id           Int      @id @default(autoincrement())
   name         String
