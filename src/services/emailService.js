@@ -30,18 +30,16 @@ const transporter = nodemailer.createTransport({
 
 // Формируем и отправляем письмо администратору при появлении нового заказа.
 export const sendOrderNotification = async (order) => {
-  const subject = `РќРѕРІС‹Р№ Р·Р°РєР°Р· #${order.id}`;
-  console.log('test');
-
+  const subject = `Новый заказ #${order.id}`;
   // В HTML-письме передаем основные данные заказа и клиента.
   const html = `
-    <h2>РќРѕРІС‹Р№ Р·Р°РєР°Р· РЅР° СЃР°Р№С‚Рµ Cats on Cakes</h2>
-    <p><strong>ID Р·Р°РєР°Р·Р°:</strong> ${order.id}</p>
-    <p><strong>РљР»РёРµРЅС‚:</strong> ${order.name}</p>
-    <p><strong>РўРёРї СЃРІСЏР·Рё:</strong> ${order.contactType}</p>
-    <p><strong>РљРѕРЅС‚Р°РєС‚С‹:</strong> ${order.contactValue}</p>
-    <p><strong>РЎРѕРѕР±С‰РµРЅРёРµ:</strong> ${order.message}</p>
-    <p><strong>Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ:</strong> ${new Date(order.createdAt).toLocaleString('ru-RU')}</p>
+    <h2>Новый заказ на сайте Cats on Cakes</h2>
+    <p><strong>ID заказа:</strong> ${order.id}</p>
+    <p><strong>Клиент:</strong> ${order.name}</p>
+    <p><strong>Тип связи:</strong> ${order.contactType}</p>
+    <p><strong>Контакты:</strong> ${order.contactValue}</p>
+    <p><strong>Сообщение:</strong> ${order.message}</p>
+    <p><strong>Дата создания:</strong> ${new Date(order.createdAt).toLocaleString('ru-RU')}</p>
   `;
 
   const to = process.env.ADMIN_MAIL;
